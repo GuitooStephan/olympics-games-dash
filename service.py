@@ -108,5 +108,4 @@ def group_by_sport_and_sex(df: pd.DataFrame, year) -> pd.DataFrame:
     filtered_df = df[df['Year'] == int(year)]
     grouped_df = filtered_df.groupby(
         ['Sport', 'Sex']).size().sort_values(ascending=False).unstack()
-    print(grouped_df)
     return grouped_df
