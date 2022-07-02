@@ -1,0 +1,5 @@
+/* Slider custom css */
+.rc-slider-mark-text {
+    text-orientation: mixed;
+    writing-mode: vertical-rl;
+}
