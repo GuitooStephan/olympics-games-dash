@@ -1,12 +1,13 @@
 from __future__ import annotations
 from pathlib import Path
+from re import X
 from dash import Dash, html, dcc, Output, Input
 import plotly.express as px
 import plotly.graph_objects as go
 from service import (
     load_data, filter_by_medal_year, group_by_team_and_sex,
     filter_by_year, filter_by_gender_year, get_medals_by_team,
-    group_by_sport_and_sex
+    group_by_sport_and_sex,group_by_sport_and_country,filter_by_gender,group_by_team_and_athlet
 )
 
 
@@ -82,6 +83,29 @@ app.layout = html.Div(
                                 children=[
                                     dcc.Graph(id='group-by-sex')
                                 ]
+                            ),
+                            html.P(
+                                className='fw-light fs-5 mb-2',
+                                children='''Gender distribution by year'''
+                            ),
+                            html.P(
+                                className='mb-1 small',
+                                children='''Select the year'''
+                            ),
+                            dcc.Slider(
+                                df['Year'].min(),
+                                df['Year'].max(),
+                                className='mb-3',
+                                step=None,
+                                id='group-by-gender-year-slider',
+                                value=df['Year'].max(),
+                                marks={str(year): str(year)
+                                       for year in df['Year'].unique() if year % 4 == 0}
+                            ),
+                            html.Div(
+                                children=[
+                                    dcc.Graph(id='group-by-gender')
+                                ]
                             )
                         ]
                     ),
@@ -127,6 +151,29 @@ app.layout = html.Div(
                             html.Div(
                                 children=[
                                     dcc.Graph(id='group-by-age')
+                                ]
+                            ),
+                            html.P(
+                                className='fw-light fs-5 mb-2',
+                                children='''Age distribution by gender(boxplot)'''
+                            ),
+                            html.P(
+                                className='mb-1 small',
+                                children='''Select the year'''
+                            ),
+                            dcc.Slider(
+                                df['Year'].min(),
+                                df['Year'].max(),
+                                className='mb-3',
+                                step=None,
+                                id='group-by-age-year-box-slider',
+                                value=df['Year'].max(),
+                                marks={str(year): str(year)
+                                       for year in df['Year'].unique() if year % 4 == 0}
+                            ),
+                            html.Div(
+                                children=[
+                                    dcc.Graph(id='group-by-agebox')
                                 ]
                             )
                         ]
@@ -308,9 +355,87 @@ app.layout = html.Div(
                                 children=[
                                     dcc.Graph(id='sport-gender-distribution')
                                 ]
+                            ),
+                            html.P(
+                                className='fw-light fs-5 mb-2',
+                                children='''The distribution of country by sport'''
+                            ),
+                            html.P(
+                                className='mb-1 small',
+                                children='''Select the year'''
+                            ),
+                            dcc.Slider(
+                                df['Year'].min(),
+                                df['Year'].max(),
+                                className='mb-3',
+                                step=None,
+                                id='country-distribution-year-slider',
+                                value=df['Year'].max(),
+                                marks={str(year): str(year)
+                                       for year in df['Year'].unique() if year % 4 == 0},
+                            ),
+                            html.Div(
+                                children=[
+                                    dcc.Graph(id='sport-counrty-distribution')
+                                ]
                             )
                         ]
                     ),
+        html.Div(
+            className='pb-5',
+            children=html.Div(
+                className='row',
+                children=[
+                    html.Div(
+                        className='col-md-6',
+                        children=[
+                            html.P(
+                                className='fw-light fs-3 mb-4',
+                                children='''Analysis of the Athelts'''
+                            ),
+                            html.P(
+                                className='fw-light fs-5 mb-2',
+                                children='''Ranking of the top 10'''
+                            ),
+                            html.P(
+                                className='mb-1 small',
+                                children='''Filter by medals'''
+                            ),
+                            dcc.Dropdown(
+                                className='mb-3',
+                                options=[
+                                    {'label': 'Bronze', 'value': 1},
+                                    {'label': 'Silver', 'value': 2},
+                                    {'label': 'Gold', 'value': 3}
+                                ],
+                                value=1,
+                                id='athlet-by-medal-dropdown'
+                            ),
+                            html.P(
+                                className='mb-1 small',
+                                children='''Select the year'''
+                            ),
+                            dcc.Slider(
+                                df['Year'].min(),
+                                df['Year'].max(),
+                                className='mb-3',
+                                step=None,
+                                id='athlet-by-medal-year-slider',
+                                value=df['Year'].max(),
+                                marks={str(year): str(year)
+                                       for year in df['Year'].unique() if year % 4 == 0},
+                            ),
+                            html.Div(
+                                className='mb-3',
+                                children=[
+                                    dcc.Graph(id='athlet-by-medal')
+                                ]
+                            )
+                        ]
+                    )
+                ]
+            )
+        ),              
                     # html.Div(
                     #     className='col-md-6',
                     #     children=[
@@ -546,6 +671,98 @@ def update_figure_season_by_country_with_filters(selected_year):
     fig.update_layout(transition_duration=300)
     return fig
 
+@app.callback(
+    Output('sport-counrty-distribution', 'figure'),
+    Input('country-distribution-year-slider', 'value')
+)
+def update_figure_season_by_country_with_filters(selected_year):
+    """Callback for graph id - sport-country-distribution"""
+    _df = group_by_sport_and_country(
+        df, selected_year)
+
+    if len(_df) == 0:
+        fig = empty_state
+    else:
+        fig = px.scatter(
+            _df)
+        
+
+    fig.update_layout(transition_duration=300)
+    return fig
+
+@app.callback(
+    Output('group-by-gender', 'figure'),
+    Input('group-by-gender-year-slider', 'value')
+)
+
+def update_figure_group_by_sex_with_filters(selected_year):
+    """Callback for graph id - country-medals"""
+    _df = filter_by_gender(
+        df, selected_year)
+
+    if len(_df) == 0:
+        fig = empty_state
+    else:
+        fig = px.pie(
+            _df,
+            names=['Male', 'Female'],
+            values=_df.values,
+            height=500
+        )
+        fig.update_traces(
+            textinfo='label+percent+value'
+        )
+    fig.update_layout(transition_duration=300)
+    return fig
+
+@app.callback(
+    Output('group-by-agebox', 'figure'),
+    Input('group-by-age-year-box-slider', 'value')
+)
+def update_figure_group_by_age_with_filters(selected_year):
+    """Callback for graph id - group-by-age"""
+    _df = filter_by_year(
+        df, selected_year)
+
+    if len(_df) == 0:
+        fig = empty_state
+    else:
+        fig = px.box(
+            _df,
+            x='Sex',
+            y='Age'
+        )
+
+    fig.update_layout(transition_duration=500)
+    return fig
+
+@app.callback(
+    Output('athlet-by-medal', 'figure'),
+    Input('athlet-by-medal-dropdown', 'value'),
+    Input('athlet-by-medal-year-slider', 'value')
+)
+def update_figure_country_by_medal_with_filters(selected_medal, selected_year):
+    """Callback for graph id - country-by-medal"""
+    _df = group_by_team_and_athlet(
+        df, selected_medal, selected_year)
+
+    if len(_df) == 0:
+        fig = empty_state
+    else:
+        fig = px.bar(
+            _df,
+            x='Name',
+            y='Medal',
+            height=500
+        )
+        fig.update_layout(
+            xaxis_title='Athlet name',
+            yaxis_title='Medal Count',
+            transition_duration=500
+        )
+
+    fig.update_layout(transition_duration=300)
+    return fig
 
 if __name__ == '__main__':
     app.run_server(debug=True)
