@@ -130,7 +130,9 @@ app.layout = html.Div(
                                 html.P(
                                     className='fw-light fs-6 mb-4',
                                     children='''
-                                        Comments on the analysis of ........
+                                        The charts show the distribution of male and female athlets participating in the Olympic Games.
+                                        The first chart discribes the distribution of gender by medals and years. It shows the number of medals per sex and sport.
+                                        The second chart discribes the distribution of gender by year. It shows the ratio of female and male athletes participating in the Olympic Games.
                                     '''
                                 )
                             ]
@@ -229,7 +231,9 @@ app.layout = html.Div(
                                 html.P(
                                     className='fw-light fs-6 mb-4',
                                     children='''
-                                        Comments on the analysis of ........
+                                        The charts show the distribution of age. 
+                                        The histogram shows the age distribution by sex, filtered by medals and years. 
+                                        The boxplot describes the age distribution by gender, which shows athletes' min, max, and average age.
                                     '''
                                 )
                             ]
@@ -325,7 +329,9 @@ app.layout = html.Div(
                                 html.P(
                                     className='fw-light fs-6 mb-4',
                                     children='''
-                                        Comments
+                                        The charts show the number of medals per country.
+                                        The bar chart shows the distribution of medals by country, filtered by year and the type of medal.
+                                        The pie chart shows the distribution of all medals by country, filtered by country.
                                     '''
                                 )
                             ]
@@ -382,7 +388,7 @@ app.layout = html.Div(
                                 html.P(
                                     className='fw-light fs-6 mb-4',
                                     children='''
-                                        Comments
+                                        The treemap shows the season participation by country, filtered by year.
                                     '''
                                 )
                             ]
@@ -508,7 +514,10 @@ app.layout = html.Div(
                                 html.P(
                                     className='fw-light fs-6 mb-4',
                                     children='''
-                                        Comments
+                                        The charts show the analysis of sports.
+                                        The treemap shows the sports participation in Olympic Games, filtered by gender and year.
+                                        The first scatter plot shows the sports distribution by gender, filtered by year.
+                                        The second scatter plot shows the distribution of sport by country, filtered by year.
                                     '''
                                 )
                             ]
@@ -532,7 +541,7 @@ app.layout = html.Div(
                             children=[
                                 html.P(
                                     className='fw-light fs-5 mb-2',
-                                    children='''Ranking of the top 10'''
+                                    children='''Ranking of the top 7 male and female athletes'''
                                 ),
                                 html.P(
                                     className='mb-1 small',
@@ -580,7 +589,7 @@ app.layout = html.Div(
                                 html.P(
                                     className='fw-light fs-6 mb-4',
                                     children='''
-                                        Comments
+                                        The chart show the ranking of the top 7 athletes with the most medals, filtered by medals and year.
                                     '''
                                 )
                             ]
@@ -893,7 +902,8 @@ def update_figure_country_by_medal_with_filters(selected_medal, selected_year):
             transition_duration=500
         )
 
-    fig.update_layout(transition_duration=300)
+    fig.update_layout(transition_duration=300,
+    yaxis_range=[1,9])
     return fig
 
 
