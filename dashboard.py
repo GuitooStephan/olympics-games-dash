@@ -7,7 +7,8 @@ import plotly.graph_objects as go
 from service import (
     load_data, filter_by_medal_year, group_by_team_and_sex,
     filter_by_year, filter_by_gender_year, get_medals_by_team,
-    group_by_sport_and_sex, group_by_sport_and_country, filter_by_gender, group_by_team_and_athlet
+    group_by_sport_and_sex, group_by_sport_and_country, filter_by_gender,
+    group_by_athlete, count_athletes_medals_by_medals
 )
 
 
@@ -124,17 +125,26 @@ app.layout = html.Div(
                             className='col-md-12',
                             children=[
                                 html.P(
-                                    className='fw-normal small mb-2',
+                                    className='fw-normal small mb-2 text-primary',
                                     children='''Comments'''
                                 ),
                                 html.P(
                                     className='fw-light fs-6 mb-4',
-                                    children='''
-                                        The charts show the distribution of male and female athlets participating in the Olympic Games.
-                                        The first chart describes the distribution of gender by medals and years. It shows the number of medals per sex and sport.
-                                        The second chart describes the distribution of gender by year. It shows the ratio of female and male athletes participating in the Olympic Games.
-                                        The analysis of gender show that approximately 58 percent of competing athletes were male, while 42 percent were female. Male seems to be dominating in terms of participation.
-                                    '''
+                                    children=[
+                                        html.P(
+                                            children='''
+                                                The first chart describes the distribution of gender by medals and years. It shows the number of medals per sex by sport.
+                                                The map shows that females were admitted to the olympic games from 1990 with some few sports. Along the years, they joined more and more sports with Swimming and Athletics hosting the majority.
+                                            '''
+                                        ),
+                                        html.P(
+                                            children='''
+                                                The second chart describes the distribution of gender by year. It shows the ratio of female and male athletes participating in the Olympic Games.
+                                                The analysis of gender show that approximately 58 percent of competing athletes were male, while 42 percent were female. Male seems to be dominating in terms of participation.
+                                                We also notice an increment from the female since the year they joined the games. 
+                                            '''
+                                        )
+                                    ]
                                 )
                             ]
                         )
@@ -231,13 +241,16 @@ app.layout = html.Div(
                                 ),
                                 html.P(
                                     className='fw-light fs-6 mb-4',
-                                    children='''
-                                        The charts show the distribution of age. 
-                                        The histogram shows the age distribution by sex, filtered by medals and years. 
-                                        The boxplot describes the age distribution by gender, which shows athletes' min, max, and average age.
-                                        From the above distribution we observe maximum participants are of age between 23–37 years in 2020.
-                                        As well as the most gold medals have 20-34 years old athletes.
-                                    '''
+                                    children=[
+                                        html.P('''
+                                            The histogram shows the age distribution by sex, filtered by medals and years.
+                                            Most gold and bronze medals winners are in their 20s while silver winners are in their 30s. 
+                                        '''),
+                                        html.P('''
+                                            The boxplot describes the age distribution by gender, which shows athletes' min, max, and average age.
+                                            From the graph, we observe maximum participants are of age between 23–37 years in 2020 with female being younger.
+                                        ''')
+                                    ]
                                 )
                             ]
                         )
@@ -331,13 +344,17 @@ app.layout = html.Div(
                                 ),
                                 html.P(
                                     className='fw-light fs-6 mb-4',
-                                    children='''
-                                        The charts show the number of medals per country.
-                                        The bar chart shows the distribution of medals by country, filtered by year and the type of medal.
-                                        The pie chart shows the distribution of all medals by country, filtered by country.
-                                        China seems to lead the Gold medal charts for the last held Olympics in the year 2020 but in 2016 US have won the most gold medals.
-                                        In pie chart we can see that US has the most total medals(5219) compare to China(901).
-                                    '''
+                                    children=[
+                                        html.P('''
+                                            The bar chart shows the distribution of medals by country, filtered by year and the type of medal.
+                                            China seems to lead the Gold medal charts for the last held Olympics in the year 2020 but in 2016 US have won the most gold medals.
+                                            Russia also appears severally in the top 5 of the bronze medals charts.
+                                        '''),
+                                        html.P('''
+                                            The pie chart shows the distribution of all medals by country, filtered by country.
+                                            In pie chart we can see that US has the most total medals(5219) compare to China(901).
+                                        ''')
+                                    ]
                                 )
                             ]
                         )
@@ -392,11 +409,12 @@ app.layout = html.Div(
                                 ),
                                 html.P(
                                     className='fw-light fs-6 mb-4',
-                                    children='''
-                                       The treemap shows the season participation by country, filtered by year.
-                                        From the above chart, we can assume that winter games are not as popular as summer games, 
-                                        because games such as skiing require snow or a cold climate, and certain areas of the world don’t have such a climate.
-                                    '''
+                                    children=[
+                                        html.P('''
+                                            From the above chart, we can assume that winter games are not as popular as summer games, 
+                                            because games such as skiing require snow or a cold climate, and certain areas of the world don't have such a climate.
+                                        ''')
+                                    ]
                                 )
                             ]
                         )
@@ -520,14 +538,21 @@ app.layout = html.Div(
                                 ),
                                 html.P(
                                     className='fw-light fs-6 mb-4',
-                                    children='''
-                                        The charts show the analysis of sports.
-                                        The treemap shows the sports participation in Olympic Games, filtered by gender and year.
-                                        The first scatter plot shows the sports distribution by gender, filtered by year.
-                                        The second scatter plot shows the distribution of sport by country, filtered by year.
-                                        Athletes participate most in Athletics, followed by Swimming.
-                                        The games least engaged in are Equestrian, Wheelchair Rugby and Wheelchair Tennis.
-                                    '''
+                                    children=[
+                                        html.P('''
+                                            The treemap shows the sports participation in Olympic Games, filtered by gender and year.
+                                            Athletes participate most in Athletics, followed by Swimming.
+                                            The games least engaged in are Equestrian, Wheelchair Rugby and Wheelchair Tennis.
+                                        '''),
+                                        html.P('''
+                                            The first scatter plot shows the sports distribution by gender, filtered by year.
+                                            Although most sports are dominated by males, females are catching up in some sports like rowing.
+                                        '''),
+                                        html.P('''
+                                            The second scatter plot shows the distribution of sport by country, filtered by year.
+                                            The united states is the most active country in the Olympics.
+                                        ''')
+                                    ]
                                 )
                             ]
                         )
@@ -589,6 +614,35 @@ app.layout = html.Div(
                             ]
                         ),
                         html.Div(
+                            className='col-md-6',
+                            children=[
+                                html.P(
+                                    className='fw-light fs-5 mb-2',
+                                    children='''Ranking of the top 10 male and female athletes of all times'''
+                                ),
+                                html.P(
+                                    className='mb-1 small',
+                                    children='''Filter by medals'''
+                                ),
+                                dcc.Dropdown(
+                                    className='mb-3',
+                                    options=[
+                                        {'label': 'Bronze', 'value': 1},
+                                        {'label': 'Silver', 'value': 2},
+                                        {'label': 'Gold', 'value': 3}
+                                    ],
+                                    value=3,
+                                    id='athlete-medal-count-dropdown'
+                                ),
+                                html.Div(
+                                    className='mb-3',
+                                    children=[
+                                        dcc.Graph(id='athlete-medal-count')
+                                    ]
+                                )
+                            ]
+                        ),
+                        html.Div(
                             className='col-md-12',
                             children=[
                                 html.P(
@@ -597,12 +651,12 @@ app.layout = html.Div(
                                 ),
                                 html.P(
                                     className='fw-light fs-6 mb-4',
-                                    children='''
-                                        The chart shows the ranking of the top 7 athletes with the most medals, filtered by medals and year. 
-                                        Michael Fred Phelps has the most gold medal in 2016 (5 gold medals), 
-                                        whereas in 2020 Greco Paige has the most gold medals (2 gold medals).
-
-                                    '''
+                                    children=[
+                                        html.P('''
+                                            Michael Fred Phelps has the most gold medal in the Olympics followed by Raymond Clarence.
+                                            Alexander Popov leads the silver and bronze medal rankings.
+                                        ''')
+                                    ]
                                 )
                             ]
                         )
@@ -893,9 +947,9 @@ def update_figure_group_by_age_with_filters(selected_year):
     Input('athlet-by-medal-dropdown', 'value'),
     Input('athlet-by-medal-year-slider', 'value')
 )
-def update_figure_country_by_medal_with_filters(selected_medal, selected_year):
-    """Callback for graph id - country-by-medal"""
-    _df = group_by_team_and_athlet(
+def update_figure_athlete_by_medal_with_filters(selected_medal, selected_year):
+    """Callback for graph id - athlete-by-medal"""
+    _df = group_by_athlete(
         df, selected_medal, selected_year)
 
     if len(_df) == 0:
@@ -914,8 +968,38 @@ def update_figure_country_by_medal_with_filters(selected_medal, selected_year):
             transition_duration=500
         )
 
-    fig.update_layout(transition_duration=300,
-    # yaxis_range=[1,9]
+    fig.update_layout(
+        transition_duration=300,
+    )
+    return fig
+
+
+@app.callback(
+    Output('athlete-medal-count', 'figure'),
+    Input('athlete-medal-count-dropdown', 'value'),
+)
+def update_figure_athlete_medal_count_by_medal(selected_medal):
+    """Callback for graph id - athlete-medal-count"""
+    _df = count_athletes_medals_by_medals(df, selected_medal)
+
+    if len(_df) == 0:
+        fig = empty_state
+    else:
+        fig = px.bar(
+            _df,
+            x=_df.index.to_list(),
+            y=_df.values,
+            height=500,
+            color_discrete_sequence=px.colors.qualitative.Pastel
+        )
+        fig.update_layout(
+            xaxis_title='Athlete name',
+            yaxis_title='Medal Count',
+            transition_duration=500
+        )
+
+    fig.update_layout(
+        transition_duration=300,
     )
     return fig
 

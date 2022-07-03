@@ -130,7 +130,7 @@ def filter_by_gender(df: pd.DataFrame, year) -> pd.DataFrame:
     return grouped_df
 
 
-def group_by_team_and_athlet(df: pd.DataFrame, medal, year) -> pd.DataFrame:
+def group_by_athlete(df: pd.DataFrame, medal, year) -> pd.DataFrame:
     """
     Group dataframe by team
         @param df Dataframe
@@ -144,3 +144,16 @@ def group_by_team_and_athlet(df: pd.DataFrame, medal, year) -> pd.DataFrame:
         ascending=False).reset_index().head(7)
 
     return new_df
+
+
+def count_athletes_medals_by_medals(df: pd.DataFrame, medal) -> pd.DataFrame:
+    """
+    Count athletes medals
+    """
+    filtered_df = df[
+        df['Medal'] == medal
+    ]
+
+    _df = filtered_df.groupby('Name').size(
+    ).sort_values(ascending=False).head(10)
+    return _df
