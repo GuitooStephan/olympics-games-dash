@@ -120,6 +120,7 @@ def group_by_sport_and_country(df: pd.DataFrame, year) -> pd.DataFrame:
         ['Sport', 'Team']).size().sort_values(ascending=False).unstack()
     return grouped_df
 
+
 def filter_by_gender(df: pd.DataFrame, year) -> pd.DataFrame:
     """
     Group by sport and country
@@ -127,6 +128,7 @@ def filter_by_gender(df: pd.DataFrame, year) -> pd.DataFrame:
     filtered_df = df[df['Year'] == int(year)]
     grouped_df = filtered_df['Sex'].value_counts()
     return grouped_df
+
 
 def group_by_team_and_athlet(df: pd.DataFrame, medal, year) -> pd.DataFrame:
     """
@@ -138,6 +140,7 @@ def group_by_team_and_athlet(df: pd.DataFrame, medal, year) -> pd.DataFrame:
             df['Medal'] == medal, df['Year'] == int(year)
         )
     ]
-    new_df = filtered_df.groupby('Name').Medal.count().sort_values(ascending = False).reset_index().head(7)
+    new_df = filtered_df.groupby('Name').Medal.count().sort_values(
+        ascending=False).reset_index().head(7)
 
     return new_df
