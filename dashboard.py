@@ -125,7 +125,7 @@ app.layout = html.Div(
                             className='col-md-12',
                             children=[
                                 html.P(
-                                    className='fw-normal small mb-2 text-primary',
+                                    className='fw-normal small mb-2',
                                     children='''Comments'''
                                 ),
                                 html.P(
